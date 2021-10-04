@@ -58,6 +58,7 @@ for i in range(len(enrollment_history)):
 
 
 sorting_PlanC_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_C')
+sorting_PlanB_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_B')
 
 GECompletionReport.GE_Progress_df.sort_values(by=['Missing_Num_GE_Courses'], inplace=True, ascending=True)
 GECompletionReport.GE_Progress_df.to_csv('C:/Users/fmixson/Desktop/Programming/Undecided_GE.csv')

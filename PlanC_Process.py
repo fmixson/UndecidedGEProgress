@@ -40,28 +40,6 @@ def planc_processing(student_id, courses, major_name, plan):
     ge_report = GECompletionReport(student_id, completed_ge_courses=completed_ge_courses,
                                    missing_ge_courses=missing_ge_courses, completed_ge_units=completed_ge_units, plan=plan)
     GE_Progress_df = ge_report.ge_completion()
-    # major = MajorRequirements(revised_course_list=student.degree_applicable_dict,
-    #                           completed_ge_courses=ge_requirements.completed_ge_courses,
-    #                           major_requirements=major_course_requirements,
-    #                           major_name=major_name)
-
-
-    # missing_courses_dict = major_progress.major_num_of_courses()
-    # missing_units_dict = major_progress.major_num_of_units()
-
-    # majors_report = MajorCompletionReport(student_id=student_id, major=major_name, missing_courses_dict=missing_courses_dict,
-    #                                       missing_units_dict=missing_units_dict, major_course_dict=major.major_course_dict,
-    #                                       major_units_dict=major.area_units_dict,
-    #                                       major_units_list=major.major_units_list,
-    #                                       dataframe=GE_Progress_df)
-    # majors_report.major_completion()
-    # degree_app = DegreeApplicableUnits(student_id=student_id,
-    #                                    degree_applicable_dict=student.degree_applicable_dict,
-    #                                    major_courses_list=major.major_courses_list,
-    #                                    completed_ge_courses=ge_requirements.completed_ge_courses,
-    #                                    completed_ge_units=ge_requirements.completed_ge_units,
-    #                                    major_units_list=major.major_units_list)
-    # elective_units, elective_courses, elective_dict = degree_app.elective_courses()
 
     degree_completion = DegreeCompletionReport(
         completed_ge_courses=ge_requirements.completed_ge_courses,
@@ -69,12 +47,6 @@ def planc_processing(student_id, courses, major_name, plan):
         student_id=student_id,
         student_major=major_name,
         missing_ge=missing_ge_courses)
-
-
-    # length, missing_major_courses = degree_completion.degree_completion()
-    # length = degree_completion.degree_status(length=length, missing_major_courses=missing_major_courses)
-    # degree_completion.unused_courses(ge_courses=ge_requirements.completed_ge_courses,
-    #                                  student_course_list=student.degree_applicable_dict)
 
 
 def sorting_PlanC_majors(enrollment_history, major_name, plan):
