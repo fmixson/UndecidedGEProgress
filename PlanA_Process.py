@@ -2,56 +2,58 @@ from Degree_Applicable_Electives import DegreeApplicableUnits
 from Degree_Completion_Report import DegreeCompletionReport
 from GE_Progress import GEProgress
 from GE_Requirements import GeRequirements
-# from Major_Progress import MajorProgress
-# from Major_Requirements import MajorRequirements
 from Student_Info import StudentInfo
 from Student_Info import TermInfo
 from Student_Info import CourseInfo
 from Student_Info import DisciplineCount
+# from Major_Progress import MajorProgress
+# from Major_Requirements import MajorRequirements
+# from Student_Info import StudentInfo
 # from Major_Courses_Report import MajorCompletionReport
 from GE_Courses_Report import GECompletionReport
 # from main import enrollment_history
 from Student_Info import CatalogTerm
 
-def planc_processing(student_id, courses, major_name, plan):
-    planc_ge_requirements = {'Comp': 0, 'Crit_Think': 0, 'Oral_Comm': 0, 'Math': 0, 'Arts': 0, 'Hum': 0, 'Arts_Hum': 0,
-                             'Soc_Behav1': 0, 'Soc_Behav2': 0, 'Soc_Behav3': 0, 'Phys_Sci': 0, 'Bio_Sci': 0, 'Sci_Labs': 0}
+
+def plana_processing(student_id, courses, major_name, plan):
+    plana_ge_requirements = {'Math_Proficiency': 0, 'Writing_Proficiency': 0, 'Reading_Proficiency': 0,
+                          'Health_Proficiency': 0, 'Nat_Sci': 0,
+                          'Soc_Sci': 0, 'FA_Hum': 0, 'Comp': 0, 'Analytic': 0}
 
     student = StudentInfo(student_id, courses)
     eligible_course_list = student.eligible_course_list()
     term = TermInfo(student_id, courses)
     semester = term.first_term()
-    ct = CatalogTerm()
-    ct.term_list()
+    tc = CatalogTerm(student_id, courses)
+    tc.calculate_catalog_term()
     course = CourseInfo(student_id, courses)
     enrolled_courses = course.current_courses()
     c = DisciplineCount(student_id, courses, passed_courses=eligible_course_list)
     all_courses = c.all_courses()
     eligible_courses = c.completed_courses()
-    ge_requirements = GeRequirements(student.degree_applicable_dict, ge_plan='PlanC_GE.csv')
+    ge_requirements = GeRequirements(student.degree_applicable_dict, ge_plan='PlanA_GE.csv')
     ge_dataframe = ge_requirements.dataframe()
+    ge_requirements.ge_courses_completed('Math_Proficiency', ge_dataframe)
+    ge_requirements.ge_courses_completed('Writing_Proficiency', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('Health_Proficiency', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('Reading_Proficiency', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('Nat_Sci', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('Soc_Sci', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('Beh_Sci', ge_dataframe=ge_dataframe)
+    ge_requirements.ge_courses_completed('FA_Hum', ge_dataframe=ge_dataframe)
     ge_requirements.ge_courses_completed('Comp', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Crit_Think', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Oral_Comm', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Math', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Arts', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Hum', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Arts_Hum', ge_dataframe=ge_dataframe)
-    ge_requirements.soc_behav_courses('Soc_Behav1', ge_dataframe=ge_dataframe)
-    ge_requirements.soc_behav_courses('Soc_Behav2', ge_dataframe=ge_dataframe)
-    ge_requirements.soc_behav_courses('Soc_Behav3', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Phys_Sci', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Bio_Sci', ge_dataframe=ge_dataframe)
-    ge_requirements.ge_courses_completed('Sci_Labs', ge_dataframe=ge_dataframe)
-
-
+    ge_requirements.ge_courses_completed('Analytic', ge_dataframe=ge_dataframe)
+    ge_requirements.area_e_ge_requirements(ge_dataframe=ge_dataframe)
+    ge_requirements.reading_proficiency()
     ge_progress = GEProgress(ge_requirements.completed_ge_courses, ge_requirements.completed_ge_units,
-                                student_id, ge_plan_requirements=planc_ge_requirements)
+                                student_id, ge_plan_requirements=plana_ge_requirements)
     missing_ge_courses, completed_ge_courses, completed_ge_units = ge_progress.ge_requirements_completed()
 
     ge_report = GECompletionReport(student_id, completed_ge_courses=completed_ge_courses,
-                                   missing_ge_courses=missing_ge_courses, completed_ge_units=completed_ge_units, plan=plan,
-                                   current_enrollment=enrolled_courses, first_term=semester, all_count=all_courses,
+                                    missing_ge_courses=missing_ge_courses,completed_ge_units=completed_ge_units, plan=plan,
+                                    current_enrollment=enrolled_courses,
+                                    first_term=semester,
+                                    all_count=all_courses,
                                    passed_courses=eligible_courses)
     GE_Progress_df = ge_report.ge_completion()
     ge_report.total_missing_ge()
@@ -66,10 +68,7 @@ def planc_processing(student_id, courses, major_name, plan):
         passed_courses=eligible_courses)
 
 
-
-
-
-def sorting_PlanC_majors(enrollment_history, major_name, plan):
+def sorting_PlanA_majors(enrollment_history, major_name, plan):
     student_id_list = []
 
     for i in range(len(enrollment_history)):
@@ -85,4 +84,4 @@ def sorting_PlanC_majors(enrollment_history, major_name, plan):
         """This for loop takes the list of students with a particular major and runs it through the AAT program.
         """
         # print(major_name)
-        planc_processing(student_id=student_id, courses=enrollment_history, major_name=major_name, plan=plan)
+        plana_processing(student_id=student_id, courses=enrollment_history, major_name=major_name, plan=plan)

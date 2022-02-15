@@ -1,7 +1,7 @@
 import pandas
 import pandas as pd
-# from PlanA_Process import sorting_PlanA_majors
-# from PlanB_Process import sorting_PlanB_majors
+from PlanA_Process import sorting_PlanA_majors
+from PlanB_Process import sorting_PlanB_majors
 from PlanC_Process import sorting_PlanC_majors
 from Degree_Completion_Report import DegreeCompletionReport
 # from Major_Courses_Report import MajorCompletionReport
@@ -10,7 +10,7 @@ from GE_Courses_Report import GECompletionReport
 pd.set_option('display.max_columns', None)
 student_id_and_major = pd.read_csv(
     "C:/Users/fmixson/Desktop/Programming/Major/Exploratory and Discovery LCP High Unit Counts.csv")
-print('Student ID and Major', student_id_and_major)
+# print('Student ID and Major', student_id_and_major)
 
 id_and_major_dict = {}
 
@@ -27,11 +27,12 @@ enrollment_history['Class Subject'] = enrollment_history['Class Subject'].str.st
 enrollment_history['Class Catalog Number'] = enrollment_history['Class Catalog Number'].str.strip()
 enrollment_history['Course'] = enrollment_history['Class Subject'] + " " + enrollment_history['Class Catalog Number']
 enrollment_history['Class Catalog Number'] = enrollment_history['Class Catalog Number'].fillna(0)
-nona_enrollment_history = enrollment_history[enrollment_history['Official Grade'].notna()]
+enrollment_history['Enrollment Drop Date'] = enrollment_history['Enrollment Drop Date'].fillna(0)
+# nona_enrollment_history = enrollment_history[enrollment_history['Official Grade'].notna()]
+nona_enrollment_history = enrollment_history[enrollment_history['Class Subject'].notna()]
 nona_enrollment_history = nona_enrollment_history.reset_index(drop=True)
 enrollment_history = nona_enrollment_history
-pandas.set_option('display.max_rows', None)
-# print(enrollment_history)
+
 
 # enrollment_history = nona_enrollment_history
 # index_W = enrollment_history[enrollment_history['Official Grade'] == 'W') & enrollment_history['Official Grade'] == 'D'].index
@@ -45,24 +46,23 @@ for i in range(len(enrollment_history)):
     # print(len(enrollment_history), i)
     ID = enrollment_history.loc[i, "ID"]
     if ID in id_and_major_dict.keys():
-
         enrollment_history.loc[i, "Major"] = id_and_major_dict[ID]
         # print(enrollment_history.loc[i, "Major"])
         if i == len(enrollment_history) - 1:
-            print('equal works')
+            # print('equal works')
             break
         else:
             if enrollment_history.loc[i, 'ID'] != enrollment_history.loc[i + 1, 'ID']:
-                print('break')
+                # print('break')
                 continue
 
 
-sorting_PlanC_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_C')
+sorting_PlanA_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_A')
 sorting_PlanB_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_B')
-
+sorting_PlanC_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_C')
 GECompletionReport.GE_Progress_df.sort_values(by=['Missing_Num_GE_Courses'], inplace=True, ascending=True)
 GECompletionReport.GE_Progress_df.to_csv('C:/Users/fmixson/Desktop/Programming/Undecided_GE.csv')
-
+DegreeCompletionReport.Undecided_df.to_csv('C:/Users/fmixson/Desktop/Programming/Degree_Completion_Undecided_GE.csv')
 
 
 

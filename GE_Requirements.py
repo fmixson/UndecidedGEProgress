@@ -44,9 +44,9 @@ class GeRequirements:
                     #             if self.soc_behav_disc_list < 2:
                     #                 if key not in discipline_set:
                             self.soc_behav_course_list.append(key)
-                            print('soc behav list', self.soc_behav_course_list)
+                            # print('soc behav list', self.soc_behav_course_list)
                             self.completed_ge_courses[area_name] = key
-                            print(self.completed_ge_courses)
+                            # print(self.completed_ge_courses)
                             self.completed_ge_units.append(self.degree_applicable_dict[key])
                             total = sum(self.completed_ge_units)
 
@@ -74,6 +74,7 @@ class GeRequirements:
         if 'Reading Proficiency' not in self.completed_ge_courses:
             if sum(self.completed_ge_units) >= 12:
                 self.completed_ge_courses['Reading_Proficiency'] = 'Met(GE Units)'
+                # print(self.completed_ge_courses)
         return self.completed_ge_courses
 
 

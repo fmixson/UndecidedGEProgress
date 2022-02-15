@@ -5,19 +5,22 @@ import pandas as pd
 
 
 class DegreeCompletionReport:
-    columns = ['Student_ID', 'Major', 'GE_Status','GE_Units', 'GE_Missing', 'Missing_GE', 'GE_Courses']
+    columns = ['Student_ID', 'Major', 'GE_Status','GE_Units', 'GE_Missing', 'Missing_GE', 'GE_Courses', 'Enrolled Courses',
+               'First_Term']
     Undecided_df = pd.DataFrame(columns=columns)
     # degree_units_df.sort_values(by=['Total_Missing'], inplace=True, ascending=True)
     # columns2 = ['Student_ID', 'Major', 'Degree_Units', 'GE_Courses', 'Major_Courses', 'Elective_Courses']
     # degree_courses_df = pd.DataFrame(columns=columns2)
 
     def __init__(self, completed_ge_courses, completed_ge_units, student_id, student_major,
-                 missing_ge):
+                 missing_ge, all_count, passed_courses):
         self.missing_ge = missing_ge
         self.completed_ge_units = completed_ge_units
         self.completed_ge_courses = completed_ge_courses
         self.student_id = student_id
         self.student_major = student_major
+        self.all_count = all_count
+        self.passed_courses = passed_courses
 
 
 
@@ -33,6 +36,8 @@ class DegreeCompletionReport:
 
         DegreeCompletionReport.Undecided_df.loc[length, 'Student_ID'] = self.student_id
         DegreeCompletionReport.Undecided_df.loc[length, 'Major'] = self.student_major
+        DegreeCompletionReport.Undecided_df .loc[length, 'First_Term'] = self.first_term
+        DegreeCompletionReport.Undecided_df.loc[length, 'Enrolled_Courses'] = self.enrolled_courses
         DegreeCompletionReport.Undecided_df.loc[length, 'GE_Units'] = sum(self.completed_ge_units)
         # major_units_total_value = sum(self.area_units_dict.values())
         # DegreeCompletionReport.LS_AA_Degrees_df.loc[length, 'Total_Major_Units'] = major_units_total_value
@@ -58,6 +63,10 @@ class DegreeCompletionReport:
 
         ge_list = self.completed_ge_courses.items()
         DegreeCompletionReport.Undecided_df.loc[length, 'GE_Courses'] = ge_list
+
+        DegreeCompletionReport.Undecided_df.loc[length, 'All_Courses'] = self.all_courses
+        DegreeCompletionReport.Undecided_df.loc[length, 'Passed_Courses'] = self.eligible_courses
+
         # major_list = self.major_course_dict.items()
         # DegreeCompletionReport.LS_AA_Degrees_df.loc[length, 'Major_Courses'] = major_list
         # DegreeCompletionReport.LS_AA_Degrees_df.loc[length, 'Elective_Courses'] = self.elective_courses
