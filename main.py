@@ -9,8 +9,8 @@ from GE_Courses_Report import GECompletionReport
 
 pd.set_option('display.max_columns', None)
 student_id_and_major = pd.read_csv(
-    "C:/Users/fmixson/Desktop/Programming/Major/Exploratory and Discovery LCP High Unit Counts.csv")
-# print('Student ID and Major', student_id_and_major)
+    "C:Users/fmixson/Desktop/Undecided/Copy of Current_Undecided_Students.csv")
+print(student_id_and_major)
 
 id_and_major_dict = {}
 
@@ -19,7 +19,7 @@ for i in range(len(student_id_and_major)):
 
 
 enrollment_history = pd.read_csv(
-    "C:/Users/fmixson/Desktop/Programming/Enrollment_Histories/Enrollment History_20210913_ExpDisc.csv")
+    "C:/Users/fmixson/Desktop/Copy of enrollment_history_undecided_20220215.csv")
 enrollment_history.sort_values(['ID'], inplace=True)
 enrollment_history.replace(to_replace="SPCH",
                            value="COMM", inplace=True)
@@ -34,8 +34,8 @@ nona_enrollment_history = nona_enrollment_history.reset_index(drop=True)
 enrollment_history = nona_enrollment_history
 
 
-# enrollment_history = nona_enrollment_history
-# index_W = enrollment_history[enrollment_history['Official Grade'] == 'W') & enrollment_history['Official Grade'] == 'D'].index
+enrollment_history = nona_enrollment_history
+# index_W = enrollment_history[enrollment_history['Official Grade'] == 'W' & enrollment_history['Official Grade'] == 'D'].index
 # enrollment_history.drop(index_W, inplace=True)
 """
 Create new column then do for loop with if statement. 
@@ -61,8 +61,8 @@ sorting_PlanA_majors(enrollment_history=enrollment_history, major_name="Undecide
 sorting_PlanB_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_B')
 sorting_PlanC_majors(enrollment_history=enrollment_history, major_name="Undecided - AA/Transfer", plan='Plan_C')
 GECompletionReport.GE_Progress_df.sort_values(by=['Missing_Num_GE_Courses'], inplace=True, ascending=True)
-GECompletionReport.GE_Progress_df.to_csv('C:/Users/fmixson/Desktop/Programming/Undecided_GE.csv')
-DegreeCompletionReport.Undecided_df.to_csv('C:/Users/fmixson/Desktop/Programming/Degree_Completion_Undecided_GE.csv')
+GECompletionReport.GE_Progress_df.to_csv('C:/Users/fmixson/Desktop/Undecided_GE.csv')
+DegreeCompletionReport.Undecided_df.to_csv('C:/Users/fmixson/Desktop/Degree_Completion_Undecided_GE.csv')
 
 
 
