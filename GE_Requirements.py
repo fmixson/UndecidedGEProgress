@@ -49,12 +49,7 @@ class GeRequirements:
                             # print(self.completed_ge_courses)
                             self.completed_ge_units.append(self.degree_applicable_dict[key])
                             total = sum(self.completed_ge_units)
-
-
-
         return self.completed_ge_courses, self.completed_ge_units
-
-
 
 
     def area_e_ge_requirements(self, ge_dataframe):
